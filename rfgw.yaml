@@ -1,0 +1,38 @@
+esphome:
+  name: "${name}"
+  friendly_name: "${NAME}"
+  platformio_options:
+    lib_ldf_mode: "chain+"
+    build_flags:
+      #- '-DLOG_LEVEL=LOG_VERBOSE'
+      - '-DONBOARD_LED=LED_BUILTIN'
+      - '-DMY_DEVICES=true'
+      - '-DOOK_MODULATION=true'
+      #- '-DRTL_DEBUG=4'
+      #- '-DPUBLISH_UNPARSED=true'
+      #- '-DRAW_SIGNAL_DEBUG'
+      #- '-DRTL_VERBOSE=63'
+      #- '-DREGOOKFIX_DEBUG'
+      #- '-DRF_MODULE_INIT_STATUS'
+      #- '-DRF_SX1276="SX1276"'
+      - '-DRF_MODULE_FREQUENCY=916.82'
+      #- '-DAUTOOOKFIX'
+      #- '-DRF_MODULE_DIO0=26'
+      #- '-DRF_MODULE_DIO1=33'
+      #- '-DRF_MODULE_DIO2=32'
+      #- '-DRF_MODULE_RST=23'
+      #- '-DRF_MODULE_INIT_STATUS=true'
+      #- '-DRF_MODULE_CS=18'
+      #- '-DRF_MODULE_MOSI=27'
+      #- '-DRF_MODULE_MISO=19'
+      #- '-DRF_MODULE_SCK=5'
+
+esp32:
+  board: ttgo-lora32-v21
+  framework:
+    type:  arduino
+    version: recommended
+    platform_version: 6.1.0
+
+external_components:
+  - source: components

@@ -1,0 +1,39 @@
+substitutions:
+  name: "r900"
+  NAME: "R900 RF Gateway"
+
+packages:
+  rfgw: !include rfgw.yaml
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret haapi_key
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "R900 Gateway Fallback Hotspot"
+    password: "zlYFlqIhLZ4j"
+
+captive_portal:
+
+sensor:
+  - platform: neptune_r900_sensor
+    meter_id: !secret meter_id
+    consumption:
+      name: Consumption
+    nouse:
+      name: No Use
+    backflow:
+      name: Backflow
