@@ -36,7 +36,7 @@ hopdata.sort_index(inplace=True)
 for chan in chanlist:
     plt.axhline(chan, color='r', alpha=0.2)
 
-plt.scatter(hopdata.index, hopdata)
+plt.scatter(hopdata.index, hopdata, label="Observed Transmissions")
 
 hopchan = 1 #My current dataset has the first transmission seen on channel 1.  FIXME:  Don't hardcode this
 timepdelta = 14
@@ -60,5 +60,8 @@ while(hoptime < 700):
     hopchan = (hopchan + chandelt) % len(chanlist)
 
 
-plt.scatter(hoptimes, chanlist[hopchans], alpha=0.5)
+plt.scatter(hoptimes, chanlist[hopchans], alpha=0.5, label="Predicted Hops")
+plt.legend()
+plt.xlabel("Time within cycle")
+plt.ylabel("Frequency (MHz)")
 plt.show()
