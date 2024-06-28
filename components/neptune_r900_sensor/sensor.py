@@ -19,7 +19,7 @@ CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(NeptuneR900Sensor),
         cv.Optional(CONF_CONSuMPTION): sensor.sensor_schema(
-            unit_of_measurement="Gallons", icon=ICON_EMPTY, accuracy_decimals=1
+            unit_of_measurement="gal", icon=ICON_EMPTY, accuracy_decimals=1
         ),
         cv.Optional(CONF_NOUSE): sensor.sensor_schema(
             unit_of_measurement="Days", icon=ICON_EMPTY, accuracy_decimals=0
