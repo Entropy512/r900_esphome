@@ -1,39 +1,68 @@
-substitutions:
-  name: "r900"
-  NAME: "R900 RF Gateway"
+external_components:
+  - source:
+      type: local
+      path: components
 
-packages:
-  rfgw: !include rfgw.yaml
+esp32: # ESP32-D0WD-V3 https://www.espboards.dev/esp32/esp32-30pin-devkit-generic/ is a versatile, high-performance, cost-effective wireless WiFi + BLE 4.2 combo module based on the ESP32-D0WD-V3 SoC. It features the Xtensa® 32-bit LX6 dual-core processor running at a speed of up to 240 MHz. Additionally, it comes with a large program space of 448 KB + 8 MB FLASH, 536 KB of RAM, an integrated 2.4 GHz transceiver, LNA, and other powerful resources to provide a perfect solution for 2.4G WiFi/BLE connectivity.
+  cpu_frequency: 240MHZ #ESP32-D0WD-V3, capable of 240MHz
+  variant: ESP32
+  framework:
+    type: arduino
 
-# Enable logging
-logger:
-
-# Enable Home Assistant API
-api:
-  encryption:
-    key: !secret haapi_key
-
-ota:
-  - platform: esphome
-    password: ""
+esphome:
+  name: neptune-r900
+  friendly_name: Neptune R900
+  area: Outside
 
 wifi:
+  power_save_mode: none
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  min_auth_mode: WPA2
 
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "R900 Gateway Fallback Hotspot"
-    password: "zlYFlqIhLZ4j"
+logger:
+  baud_rate: 115200
+  level: INFO
 
-captive_portal:
+api:
+  encryption:
+    key: !secret api_key
+ota:
+  - platform: esphome
+    encryption:
 
 sensor:
   - platform: neptune_r900_sensor
-    meter_id: !secret meter_id
+    meter_id: !secret r900_meter
+
+    # All SPI/RF GPIOs are configured here; no compile-time pin defines needed.
+    cs_pin: GPIO27
+    gdo0_pin: GPIO4
+    sck_pin: GPIO18
+    mosi_pin: GPIO23
+    miso_pin: GPIO19
+
+    frequency: 912.07101MHz # 912.07101MHz is halfway between Neptune R900 CHs 7 & 8, should RX 4 channels for sure, maybe 6
+    invert: false
+
     consumption:
-      name: Consumption
+      name: "Water Consumption"
+      device_class: water
+      state_class: total_increasing
+      unit_of_measurement: "gal"
+      accuracy_decimals: 2
+
     nouse:
-      name: No Use
+      name: "Days Without Use"
+
     backflow:
-      name: Backflow
+      name: "Backflow Raw Value"
+
+    leak:
+      name: "Leak Day Bins"
+
+    leak_now:
+      name: "Leak Past 24 Hours"
+
+    rssi:
+      name: "R900 Signal Strength"
